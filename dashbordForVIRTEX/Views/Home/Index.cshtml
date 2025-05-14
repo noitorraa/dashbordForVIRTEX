@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <title>VIRTEXFOOD</title>
 </head>
@@ -20,7 +21,7 @@
 
         <!-- Правая часть: кнопка + иконка настроек -->
         <div class="right-section">
-            <button class="btn">Вернуться в SCADA</button>
+            <a href="#" class="btn" id="returnToScadaBtn">Вернуться в SCADA</a>
             <button 
                 type="button"
                 class="settings-btn btn btn-link p-0" 
@@ -34,22 +35,29 @@
 
     <!-- Горизонтальный блок с 8 фреймами -->
     <section class="horizontal-section">
+        <!-- Расфасовано продукции -->
         <div class="frame">
             <div class="frame-title">расфасовано продукции</div>
-            <div class="frame-value">700 шт</div>
+            <div class="frame-value" id="productCount">700 шт</div>
             <div class="frame-reference">паспортная</div>
         </div>
+
+        <!-- Оборудование включено -->
         <div class="frame">
             <div class="frame-title">оборудование включено</div>
-            <div class="frame-value">480 мин</div>
+            <div class="frame-value" id="totalTime">480 мин</div>
         </div>
+
+        <!-- Текущая производительность -->
         <div class="frame">
-            <div class="frame-title">Текущая произаодительность</div>
-            <div class="frame-value">100 шт/ч</div>
+            <div class="frame-title">Текущая производительность</div>
+            <div class="frame-value" id="productivity">100 шт/ч</div>
         </div>
+
+        <!-- Оборудование в работе -->
         <div class="frame">
             <div class="frame-title">Оборудование в работе</div>
-            <div class="frame-value">420 мин</div>
+            <div class="frame-value" id="runTime">420 мин</div>
         </div>
         <div class="frame">
             <div class="frame-title">Показатель ОЕЕ</div>
@@ -66,7 +74,7 @@
         </div>
         <div class="frame">
             <div class="frame-title">Простой</div>
-            <div class="frame-value">60 мин</div>
+            <div class="frame-value" id="idleTime">60 мин</div>
         </div>
     </section>
 
@@ -104,14 +112,14 @@
             <div class="split-panel">
                 <div class="panel-title">Фасовочное оборудование</div>
                 <select class="report-select">
-                    <option value="1">Вариант 1</option>
-                    <option value="2">Вариант 2</option>
-                    <option value="3">Вариант 3</option>
+                    <option value="1">Завод №2.Leepack</option>
+                    <option value="2">Завод №2.Omag 2</option>
+                    <option value="3">Завод №2.Стик Машек</option>
                 </select>
             </div>
         </div>
     </section>
-    <!-- Модальное окно настроек -->
+<!-- Модальное окно -->
 <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -119,7 +127,6 @@
       <!-- Шапка -->
       <div class="modal-header d-flex align-items-center justify-content-between">
         <button type="button" class="btn" data-bs-dismiss="modal">← Назад</button>
-        </button>
         <h5 class="modal-title mx-auto">Настройки</h5>
         <div style="width: 60px;"></div>
       </div>
@@ -129,67 +136,121 @@
 
         <!-- 1) Две секции сверху -->
         <div class="row gx-4 mb-4">
-          <!-- Левая панель -->
+          <!-- Левая панель: паспортная производительность -->
           <div class="col-md-6 d-flex">
             <div class="panel-custom d-flex flex-column w-100">
               <h6 class="panel-title text-center">Паспортная производительность фасовщика</h6>
-              <input type="text" class="form-control mb-3" placeholder="Введите значение">
-              <button type="button" class="btn btn-primary w-100 mt-auto">Сохранить</button>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" id="packPerfInput" placeholder="Введите значение">
+                <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                        aria-label="Показать/скрыть значение">
+                  <i class="fa fa-eye-slash"></i>
+                </button>
+              </div>
+              <button type="button" class="btn btn-primary w-100 mt-auto" id="savePackPerfBtn">
+                Сохранить
+              </button>
             </div>
           </div>
-          <!-- Правая панель -->
+          <!-- Правая панель: SCADA -->
           <div class="col-md-6 d-flex">
             <div class="panel-custom d-flex flex-column w-100">
               <h6 class="panel-title text-center">Параметр ссылки SCADA</h6>
-              <input type="text" class="form-control mb-3" placeholder="https://addressScada">
-              <button type="button" class="btn btn-primary w-100 mt-auto">Сохранить</button>
+              <div class="input-group mb-3">
+                <input type="password" class="form-control" id="scadaLinkInput" placeholder="https://addressScada">
+                <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                        aria-label="Показать/скрыть ссылку SCADA">
+                  <i class="fa fa-eye-slash"></i>
+                </button>
+              </div>
+              <button type="button" class="btn btn-primary w-100 mt-auto" id="saveScadaLinkBtn">
+                Сохранить
+              </button>
             </div>
           </div>
         </div>
 
         <!-- 2) Секция «Параметры подключения к БД» -->
-        <div class="db-section panel-custom p-4">
-          <h6 class="panel-title text-center mb-4">Параметры подключения к БД</h6>
-          <div class="row gx-3 mb-3">
-            <div class="col-md-4">
-              <select class="form-select">
-                <option selected>Выберите тип СУБД</option>
-                <option>MySQL</option>
-                <option>PostgreSQL</option>
-                <option>SQL Server</option>
-              </select>
+        <form id="dbConfigForm">
+          @Html.AntiForgeryToken()
+          <div class="db-section panel-custom p-4">
+            <h6 class="panel-title text-center mb-4">Параметры подключения к БД</h6>
+
+            <div class="row gx-3 mb-3">
+              <div class="col-md-4">
+                <select id="dbType" class="form-select">
+                  <option selected>Выберите тип СУБД</option>
+                  <option value="MySQL">MySQL</option>
+                  <option value="PostgreSQL">PostgreSQL</option>
+                  <option value="SQL Server">SQL Server</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="dbHost" placeholder="Host name or IP">
+                  <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                          aria-label="Показать/скрыть host">
+                    <i class="fa fa-eye-slash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="dbPort" placeholder="Port">
+                  <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                          aria-label="Показать/скрыть port">
+                    <i class="fa fa-eye-slash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="col-md-4">
-              <input type="text" class="form-control" placeholder="Host name or IP">
+
+            <div class="row gx-3 mb-4">
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="dbName" placeholder="Database Name">
+                  <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                          aria-label="Показать/скрыть имя базы">
+                    <i class="fa fa-eye-slash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="dbUser" placeholder="Username">
+                  <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                          aria-label="Показать/скрыть логин">
+                    <i class="fa fa-eye-slash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" id="dbPassword" placeholder="Password">
+                  <button class="btn btn-outline-secondary toggle-password" type="button" tabindex="-1"
+                          aria-label="Показать/скрыть пароль">
+                    <i class="fa fa-eye-slash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="col-md-4">
-              <input type="text" class="form-control" placeholder="Port">
+
+            <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-primary" id="testDbBtn">Тест соединения</button>
+              <button type="button" class="btn btn-primary" id="saveDbBtn">Сохранить</button>
             </div>
           </div>
-          <div class="row gx-3 mb-4">
-            <div class="col-md-4">
-              <input type="text" class="form-control" placeholder="Database Name">
-            </div>
-            <div class="col-md-4">
-              <input type="text" class="form-control" placeholder="Username">
-            </div>
-            <div class="col-md-4">
-              <input type="password" class="form-control" placeholder="Password">
-            </div>
-          </div>
-          <div class="d-flex justify-content-between">
-            <button type="button" class="btn btn-outline-primary">Тест соединения</button>
-            <button type="button" class="btn btn-primary">Сохранить</button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js">
-    
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/saveSCADAstring.js"></script>
+    <script src="js/saveDbString.js"></script>
+    <script src="js/hideData.js"></script>
+    <script src="js/loadData.js"></script>
+    <script>console.log('>> скрипт загружен');</script>
 </body>
 
 </html>

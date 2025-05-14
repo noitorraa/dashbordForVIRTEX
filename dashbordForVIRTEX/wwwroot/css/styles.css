@@ -10,7 +10,16 @@
     background-color: #f9f9f9;
     color: #333;
   }
-  
+  .header.updating {
+    animation: pulseUpdate 1s ease-in-out;
+}
+
+@keyframes pulseUpdate {
+    0% { background-color: normal; }
+    50% { background-color: rgba(0, 150, 255, 0.1); }
+    100% { background-color: normal; }
+}
+
   /* 2. Хедер */
   .header {
     display: flex;

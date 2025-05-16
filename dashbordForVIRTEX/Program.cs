@@ -1,6 +1,7 @@
 using dashbordForVIRTEX.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using dashbordForVIRTEX.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>(); 
+builder.Services.AddScoped<IEquipmentService, EquipmentService>();
+builder.Services.AddScoped<IProductionService, ProductionService>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 
 var app = builder.Build();
 

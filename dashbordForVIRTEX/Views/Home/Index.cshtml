@@ -112,18 +112,35 @@
                     <option value="2">Неделя</option>
                     <option value="3">Месяц</option>
                 </select>
-                <button class="btn report-btn">Сформировать отчёт</button>
+                <button type="button" class="btn">
+                  Сформировать отчёт
+                </button>
             </div>
 
-            <div class="split-panel">
-                <div class="panel-title">Фасовочное оборудование</div>
-                <select class="report-select">
-                    <option value="1">Завод №2.Leepack</option>
-                    <option value="2">Завод №2.Omag 2</option>
-                    <option value="3">Завод №2.Стик Машек</option>
-                </select>
+          <div class="split-panel">
+            <div class="panel-title">Фасовочное оборудование</div>
+               <div class="btn-group report-buttons" role="group">
+                  <button
+                    type="button"
+                    class="report-btn btn btn-primary active"
+                    data-product="35"
+                    data-productivity="33"
+                  >Leepack</button>
+                  <button
+                    type="button"
+                    class="report-btn btn btn-primary"
+                    data-product="49"
+                    data-productivity="47"
+                  >Omag 2</button>
+                  <button
+                    type="button"
+                    class="report-btn btn btn-primary"
+                    data-product="42"
+                    data-productivity="40"
+                  >Стик Машек</button>
+              </div>
             </div>
-        </div>
+      </div>
     </section>
 <!-- Модальное окно -->
 <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
@@ -252,12 +269,13 @@
   </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script src="js/drowGraphs.js"></script>
+    <script src="js/loadData.js"></script>
+    <script src="js/switchOption.js"></script>
     <script src="js/saveSCADAstring.js"></script>
     <script src="js/saveDbString.js"></script>
     <script src="js/hideData.js"></script>
-    <script src="js/loadData.js"></script>
-    <script src="js/drowGraphs.js"></script>
     <script>console.log('>> скрипт загружен');</script>
 </body>
 

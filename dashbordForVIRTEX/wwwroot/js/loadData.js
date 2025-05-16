@@ -1,69 +1,39 @@
-// wwwroot/js/dashboard.js
+// loadData.js
+const MAX_PRODUCTIVITY = 15000;
+let equipmentData = null;
+let productionData = null;
 
-const MAX_PRODUCTIVITY = 15000; // Замените на реальную максимальную производительность вашего оборудования (шт/ч)
-
-let equipmentData = {};
-let productionData = {};
-
-async function updateEquipmentData() {
-    try {
-        const response = await fetch('/Home/GetEquipmentTimeData');
-        if (!response.ok) throw new Error(response.statusText);
-        equipmentData = await response.json();
-
-        document.getElementById('totalTime').textContent = `${Math.round(equipmentData.totalMinutes)} мин`;
-        document.getElementById('runTime').textContent = `${Math.round(equipmentData.runMinutes)} мин`;
-        document.getElementById('idleTime').textContent = `${Math.round(equipmentData.idleMinutes)} мин`;
-    } catch (err) {
-        console.error('Ошибка загрузки данных оборудования:', err);
-    }
+async function updateEquipmentData(productId) {
+  const res = await fetch(`/Home/GetEquipmentTimeData?archiveItemId=${productId}`);
+  equipmentData = res.ok ? await res.json() : {};
+  document.getElementById('totalTime').textContent = `${Math.round(equipmentData.totalMinutes)} мин`;
+  document.getElementById('runTime').textContent   = `${Math.round(equipmentData.runMinutes)} мин`;
+  document.getElementById('idleTime').textContent  = `${Math.round(equipmentData.idleMinutes)} мин`;
 }
 
-async function updateProductionData() {
-    try {
-        const response = await fetch('/Home/GetProductionData');
-        if (!response.ok) throw new Error(response.statusText);
-        productionData = await response.json();
-
-        document.getElementById('productCount').textContent = `${Math.round(productionData.productCount)} шт`;
-        document.getElementById('productivity').textContent = `${Math.round(productionData.productivity)} шт/ч`;
-    } catch (err) {
-        console.error('Ошибка загрузки данных продукции:', err);
-    }
+async function updateProductionData(productId, productivityId) {
+  const res = await fetch(
+    `/Home/GetProductionData?productItemId=${productId}&productivityItemId=${productivityId}`
+  );
+  productionData = res.ok ? await res.json() : {};
+  document.getElementById('productCount').textContent = `${Math.round(productionData.productCount)} шт`;
+  document.getElementById('productivity').textContent = `${Math.round(productionData.productivity)} шт/ч`;
 }
 
 function calculateOEE() {
-    if (!equipmentData || !productionData) return;
-
-    const { totalMinutes, runMinutes } = equipmentData;
-    const { productCount, productivity } = productionData;
-
-    if (!totalMinutes || !runMinutes) {
-        console.warn('Недостаточно данных для расчета');
-        return;
-    }
-
-    const availability = runMinutes / totalMinutes;
-
-    const performance = MAX_PRODUCTIVITY > 0
-        ? productivity / MAX_PRODUCTIVITY
-        : 0;
-
-    // OEE (без Quality)
-    const oee = availability * performance;
-
-    document.getElementById('availability').textContent = `${(availability * 100).toFixed(1)}%`;
-    document.getElementById('performance').textContent  = `${(performance  * 100).toFixed(1)}%`;
-    document.getElementById('oee').textContent          = `${(oee          * 100).toFixed(1)}%`;
+  if (!equipmentData || !productionData) return;
+  const availability = equipmentData.runMinutes / equipmentData.totalMinutes;
+  const performance = productionData.productivity / MAX_PRODUCTIVITY;
+  const oee = availability * performance;
+  document.getElementById('availability').textContent = `${(availability * 100).toFixed(1)}%`;
+  document.getElementById('performance').textContent  = `${(performance * 100).toFixed(1)}%`;
+  document.getElementById('oee').textContent          = `${(oee * 100).toFixed(1)}%`;
 }
 
-
-async function updateAllData() {
-    await updateEquipmentData(); // Сначала обновляем оборудование
-    await updateProductionData(); // Затем продукцию
-    calculateOEE();
+async function updateAllData(productId, productivityId) {
+  await updateEquipmentData(productId);
+  await updateProductionData(productId, productivityId);
+  calculateOEE();
 }
 
-// Инициализация
-document.addEventListener('DOMContentLoaded', updateAllData);
-setInterval(updateAllData, 30_000);
+window.updateAllData = updateAllData;

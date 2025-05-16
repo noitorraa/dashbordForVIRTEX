@@ -1,3 +1,4 @@
+using dashbordForVIRTEX.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 
@@ -10,6 +11,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
+builder.Services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>(); 
 
 var app = builder.Build();
 

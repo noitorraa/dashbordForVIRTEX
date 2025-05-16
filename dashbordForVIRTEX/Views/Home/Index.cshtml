@@ -38,43 +38,43 @@
         <!-- Расфасовано продукции -->
         <div class="frame">
             <div class="frame-title">расфасовано продукции</div>
-            <div class="frame-value" id="productCount">700 шт</div>
+            <div class="frame-value" id="productCount">? шт</div>
             <div class="frame-reference">паспортная</div>
         </div>
 
         <!-- Оборудование включено -->
         <div class="frame">
             <div class="frame-title">оборудование включено</div>
-            <div class="frame-value" id="totalTime">480 мин</div>
+            <div class="frame-value" id="totalTime">? мин</div>
         </div>
 
         <!-- Текущая производительность -->
         <div class="frame">
             <div class="frame-title">Текущая производительность</div>
-            <div class="frame-value" id="productivity">100 шт/ч</div>
+            <div class="frame-value" id="productivity">? шт/ч</div>
         </div>
 
         <!-- Оборудование в работе -->
         <div class="frame">
             <div class="frame-title">Оборудование в работе</div>
-            <div class="frame-value" id="runTime">420 мин</div>
+            <div class="frame-value" id="runTime">? мин</div>
         </div>
         <div class="frame">
             <div class="frame-title">Показатель ОЕЕ</div>
-            <div class="frame-value">80%</div>
+            <div class="frame-value" id="oee">?%</div>
             <div class="frame-reference">паспортная</div>
         </div>
         <div class="frame">
             <div class="frame-title">Готовность</div>
-            <div class="frame-value">80%</div>
+            <div class="frame-value" id="availability">?%</div>
         </div>
         <div class="frame">
             <div class="frame-title">Производительность</div>
-            <div class="frame-value">80%</div>
+            <div class="frame-value" id="performance">?%</div>
         </div>
         <div class="frame">
             <div class="frame-title">Простой</div>
-            <div class="frame-value" id="idleTime">60 мин</div>
+            <div class="frame-value" id="idleTime">? мин</div>
         </div>
     </section>
 
@@ -82,20 +82,26 @@
     <section class="main-section">
         <!-- Блок с почасовым графиком -->
         <div class="full-width-block">
-            <div class="chart-header">Почасовой график (работы оборудования)</div>
-            <div class="chart-container" id="hourly-equipment-chart"></div>
+            <div class="chart-header">Почасовой график работы оборудования</div>
+            <div class="chart-container">
+              <canvas id="hourly-equipment-chart"></canvas>
+            </div>
         </div>
 
         <!-- Блок с недельным графиком -->
         <div class="full-width-block">
             <div class="chart-header">График за последнюю неделю</div>
-            <div class="chart-container" id="weekly-performance-chart"></div>
+            <div class="chart-container">
+              <canvas id="weekly-performance-chart"></canvas>
+            </div>
         </div>
 
         <!-- Левый нижний блок -->
         <div class="text-frame">
             <div class="chart-header">Почасовой выпуск продукции</div>
-            <div class="chart-container" id="hourly-production-chart"></div>
+            <div class="chart-container">
+              <canvas id="hourly-production-chart"></canvas>
+            </div>
         </div>
 
         <!-- Правый нижний блок -->
@@ -246,10 +252,12 @@
   </div>
 </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/saveSCADAstring.js"></script>
     <script src="js/saveDbString.js"></script>
     <script src="js/hideData.js"></script>
     <script src="js/loadData.js"></script>
+    <script src="js/drowGraphs.js"></script>
     <script>console.log('>> скрипт загружен');</script>
 </body>
 

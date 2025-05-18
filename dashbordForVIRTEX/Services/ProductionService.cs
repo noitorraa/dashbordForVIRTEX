@@ -46,10 +46,12 @@ public class ProductionService : IProductionService
 public interface IProductionService
 {
     Task<ProductionDataDto> GetProductionDataAsync(
-        ApplicationDbContext db, 
-        int productItemId, 
-        int productivityItemId, 
-        int layer, 
-        long start, 
+        ApplicationDbContext db,
+        int productItemId,
+        int productivityItemId,
+        int layer,
+        long start,
         long end);
+        
+
 }

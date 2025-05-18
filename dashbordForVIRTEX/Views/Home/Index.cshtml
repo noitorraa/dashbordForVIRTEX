@@ -106,16 +106,15 @@
 
         <!-- Правый нижний блок -->
         <div class="split-container">
-            <div class="split-panel">
-                <select class="report-select">
-                    <option value="1">Сутки</option>
-                    <option value="2">Неделя</option>
-                    <option value="3">Месяц</option>
-                </select>
-                <button type="button" class="btn">
-                  Сформировать отчёт
-                </button>
-            </div>
+
+        <section class="split-panel">
+              <div class="panel-title">Период отчета</div>
+              <select id="periodSelect" class="report-select">
+                <option value="day">Сутки</option>
+                <option value="week">Неделя</option>
+                <option value="month">Месяц</option>
+              </select>
+            </section>
 
           <div class="split-panel">
             <div class="panel-title">Фасовочное оборудование</div>
@@ -139,6 +138,7 @@
                     data-productivity="40"
                   >Стик Машек</button>
               </div>
+              <button type="button" class="btn btn-success" id="generateReportBtn">Сформировать отчёт</button>
             </div>
       </div>
     </section>
@@ -276,7 +276,7 @@
     <script src="js/saveSCADAstring.js"></script>
     <script src="js/saveDbString.js"></script>
     <script src="js/hideData.js"></script>
-    <script>console.log('>> скрипт загружен');</script>
+    <script src="js/generatePDF.js"></script>
 </body>
 
 </html>

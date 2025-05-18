@@ -22,8 +22,12 @@ async function updateProductionData(productId, productivityId) {
 
 function calculateOEE() {
   if (!equipmentData || !productionData) return;
-  const availability = equipmentData.runMinutes / equipmentData.totalMinutes;
-  const performance = productionData.productivity / MAX_PRODUCTIVITY;
+  const availability = (equipmentData.totalMinutes > 0)
+      ? equipmentData.runMinutes / equipmentData.totalMinutes
+      : 0;
+  const performance = (MAX_PRODUCTIVITY > 0)
+      ? productionData.productivity / MAX_PRODUCTIVITY
+      : 0;
   const oee = availability * performance;
   document.getElementById('availability').textContent = `${(availability * 100).toFixed(1)}%`;
   document.getElementById('performance').textContent  = `${(performance * 100).toFixed(1)}%`;
